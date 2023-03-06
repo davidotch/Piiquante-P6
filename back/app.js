@@ -1,22 +1,17 @@
 const express = require("express");
-
 const app = express();
+const mongoose = require("mongoose");
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
-const uri =
-   "mongodb+srv://davidflooze:Qd3Ozc2ccPjF6Xo6@cluster0.k1iwwov.mongodb.net/?retryWrites=true&w=majority";
-const client = new MongoClient(uri, {
-   useNewUrlParser: true,
-   useUnifiedTopology: true,
-   serverApi: ServerApiVersion.v1,
-});
-client.connect((err) => {
-   const collection = client.db("test").collection("devices");
-   // perform actions on the collection object
-   client.close();
-});
+mongoose.set("strictQuery", true);
+mongoose
+   .connect(
+      "mongodb+srv://DCardon:i9vuo9IE3V5w43Cp@cluster0.vf47xko.mongodb.net/?retryWrites=true&w=majority",
+      { useNewUrlParser: true, useUnifiedTopology: true }
+   )
+   .then(() => console.log("Connexion à MongoDB réussie !"))
+   .catch(() => console.log("Connexion à MongoDB échouée !"));
 
-app.use(express.json());
+https: app.use(express.json());
 
 app.use((req, res, next) => {
    res.setHeader("Access-Control-Allow-Origin", "*");
@@ -28,7 +23,7 @@ app.use((req, res, next) => {
       "Access-Control-Allow-Methods",
       "GET, POST, PUT, DELETE, PATCH, OPTIONS"
    );
-   next();
+   next(); 
 });
 
 module.exports = app;
