@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 
+const stuffRoutes = require('./routes/sauce');
+const userRoutes = require('./routes/User');
+
 mongoose.set("strictQuery", true);
 mongoose
    .connect(
@@ -11,7 +14,7 @@ mongoose
    .then(() => console.log("Connexion à MongoDB réussie !"))
    .catch(() => console.log("Connexion à MongoDB échouée !"));
 
-https: app.use(express.json());
+
 
 app.use((req, res, next) => {
    res.setHeader("Access-Control-Allow-Origin", "*");
@@ -25,5 +28,10 @@ app.use((req, res, next) => {
    );
    next(); 
 });
+
+app.use(express.json());
+
+app.use('/api/stuff', stuffRoutes);
+app.use('/api/autj', userRoutes);
 
 module.exports = app;
