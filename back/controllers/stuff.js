@@ -1,4 +1,5 @@
 const Thing = require("../models/Thing");
+const fs = require('fs');
 
 exports.createThing = (req, res, next) => {
    const sauceObject = JSON.parse(req.body.sauce);
@@ -32,7 +33,7 @@ exports.getOneThing = (req, res, next) => {
 exports.modifyThing = (req, res, next) => {
    const sauceObject = req.file
       ? {
-           ...JSON.parse(req.body.sauce),
+           ...JSON.parse(req.body.thing),
            imageUrl: `${req.protocol}://${req.get("host")}/images/${
               req.file.filename
            }`,
