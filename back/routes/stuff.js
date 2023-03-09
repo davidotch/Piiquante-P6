@@ -3,10 +3,11 @@ const router = express.Router();
 
 const stuffControllers = require("../controllers/stuff");
 
-router.post("/", stuffControllers.createThing);
-router.put("/:id", stuffControllers.modifyThing);
-router.delete("/:id", stuffControllers.deleteThing);
-router.get("/:id", stuffControllers.getOneThing);
-router.get("/", stuffControllers.getAllThing);
+router.get("/", auth, saucesCtrl.getAllSauces);
+router.post("/", auth, multer, saucesCtrl.createSauce);
+router.get("/:id", auth, saucesCtrl.getOneSauce);
+router.put("/:id", auth, multer, saucesCtrl.modifySauce);
+router.delete("/:id", auth, saucesCtrl.deleteSauce);
+router.post("/:id/like", auth, saucesCtrl.userLikes);
 
 module.exports = router;
