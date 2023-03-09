@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const auth = require('../controllers/stuff')
+
 const stuffControllers = require("../controllers/stuff");
 
 router.get("/", auth, saucesCtrl.getAllThings);
