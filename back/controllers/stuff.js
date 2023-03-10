@@ -1,11 +1,11 @@
 const Thing = require("../models/Thing");
-const fs = require('fs');
+const fs = require("fs");
 
 exports.createThing = (req, res, next) => {
    const sauceObject = JSON.parse(req.body.sauce);
    delete sauceObject._id;
    delete sauceObject._userId;
-   const sauce = new Sauce({
+   const thing = new Thing({
       ...sauceObject,
       userId: req.auth.userId,
       imageUrl: `${req.protocol}://${req.get("host")}/images/${
@@ -16,7 +16,7 @@ exports.createThing = (req, res, next) => {
       usersLiked: [],
       usersDisliked: [],
    });
-   sauce
+   thing
       .save()
       .then(() => res.status(201).json({ message: "Sauce created !" }))
       .catch((error) => res.status(400).json({ error }));
@@ -83,7 +83,7 @@ exports.deleteThing = (req, res, next) => {
          if (thing.userId != req.auth.userId) {
             res.status(401).json({ message: "Unauthorized user !" });
          } else {
-            const filename = sauce.imageUrl.split("/images/")[1];
+            const filename = thing.imageUrl.split("/images/")[1];
             fs.unlink(`images/${filename}`, () => {
                Thing.deleteOne({ _id: req.params.id })
                   .then(() => {
@@ -100,6 +100,6 @@ exports.deleteThing = (req, res, next) => {
 
 exports.getAllThings = (req, res, next) => {
    Thing.find()
-      .then((sauces) => res.status(200).json(sauces))
+      .then((things) => res.status(200).json(things))
       .catch((error) => res.status(400).json({ error }));
 };
