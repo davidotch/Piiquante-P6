@@ -11,6 +11,6 @@ router.post("/", auth, multer, stuffControllers.createThing);
 router.get("/:id", auth, stuffControllers.getOneThing);
 router.put("/:id", auth, multer, stuffControllers.modifyThing);
 router.delete("/:id", auth, stuffControllers.deleteThing);
-// router.post("/:id/like", auth, stuffControllers.userLikes);
+router.post("/:id/like", auth, stuffControllers.userLikes);
 
 module.exports = router;
