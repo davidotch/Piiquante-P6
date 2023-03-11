@@ -1,6 +1,6 @@
 const express = require("express");
 
-const stuffRoutes = require("./routes/HotOnes");
+const hotOnesRoutes = require("./routes/HotOnes");
 const userRoutes = require("./routes/user");
 
 const path = require("path");
@@ -26,7 +26,7 @@ app.use(express.json());
 
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
-app.use("/api/sauces", stuffRoutes);
+app.use("/api/sauces", hotOnesRoutes);
 app.use("/api/auth", userRoutes);
 app.use("/images", express.static(path.join(__dirname, "images")));
 
