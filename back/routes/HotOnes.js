@@ -4,13 +4,13 @@ const router = express.Router();
 const auth = require("../middleware/authorize");
 const multer = require("../middleware/multer-config");
 
-const stuffControllers = require("../controllers/hotOnes");
+const hotOnesCtrls = require("../controllers/hotOnes");
 
-router.get("/", auth, stuffControllers.getAllThings);
-router.post("/", auth, multer, stuffControllers.createThing);
-router.get("/:id", auth, stuffControllers.getOneThing);
-router.put("/:id", auth, multer, stuffControllers.modifyThing);
-router.delete("/:id", auth, stuffControllers.deleteThing);
-router.post("/:id/like", auth, stuffControllers.userLikes);
+router.get("/", auth, hotOnesCtrls.getAllThings);
+router.post("/", auth, multer, hotOnesCtrls.createThing);
+router.get("/:id", auth, hotOnesCtrls.getOneThing);
+router.put("/:id", auth, multer, hotOnesCtrls.modifyThing);
+router.delete("/:id", auth, hotOnesCtrls.deleteThing);
+router.post("/:id/like", auth, hotOnesCtrls.userLikes);
 
 module.exports = router;
