@@ -1,6 +1,6 @@
 const express = require("express");
 
-const stuffRoutes = require("./routes/stuff");
+const stuffRoutes = require("./routes/HotOnes");
 const userRoutes = require("./routes/user");
 
 const path = require("path");
