@@ -14,6 +14,8 @@ passWordSchema
    .has()
    .digits(2) // Must have at least 2 digits
    .has()
+   .symbols(1) //must have 1 symbol
+   .has()
    .not()
    .spaces(); // Should not have spaces
 
