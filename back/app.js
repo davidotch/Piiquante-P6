@@ -5,6 +5,7 @@ const userRoutes = require("./routes/user");
 
 const path = require("path");
 const mongoose = require("mongoose");
+require('dotenv').config();
 
 const cors = require("cors");
 const helmet = require("helmet");
@@ -14,7 +15,7 @@ const app = express();
 mongoose.set("strictQuery", true);
 mongoose
    .connect(
-      "mongodb+srv://DCardon:i9vuo9IE3V5w43Cp@cluster0.vf47xko.mongodb.net/?retryWrites=true&w=majority",
+      process.env.MONGODB,
       { useNewUrlParser: true, useUnifiedTopology: true }
    )
    .then(() => console.log("Connexion à MongoDB réussie !"))
