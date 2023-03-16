@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
 
 const hotOnesRoutes = require("./routes/HotOnes");
 const userRoutes = require("./routes/user");
@@ -40,6 +41,7 @@ app.use(express.json());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" })); //Prtection des entêtes http avec helmet
 
 app.use(mongoSanitize()); //Middleware pour protéger contre les injections NoSQL, JavaScript et HTML (Insertion de caractères spéciaux)
+app.use(xss());
 
 app.use("/api/sauces", hotOnesRoutes);
 app.use("/api/auth", userRoutes);
