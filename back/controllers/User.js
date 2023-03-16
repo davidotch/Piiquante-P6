@@ -6,6 +6,7 @@ const cryptoJs = require("crypto-js");
 const dotenv = require("dotenv");
 dotenv.config();
 const cryptoEmail = process.env.CRYPTO_EMAIL;
+const secretToken = process.env.TOKEN_SECRET;
 
 exports.signup = (req, res, next) => {
    const secureEmail = cryptoJs
@@ -47,8 +48,8 @@ exports.login = (req, res, next) => {
                }
                res.status(200).json({
                   userId: user._id,
-                  token: jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", {
-                     expiresIn: "24h",
+                  token: jwt.sign({ userId: user._id }, secretToken, {
+                     expiresIn: "12h",
                   }),
                });
             })
