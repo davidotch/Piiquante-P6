@@ -90,10 +90,11 @@ exports.userLikes = (req, res, next) => {
                if (!sauce.usersLiked.includes(req.auth.userId)) {
                   saucesModel
                      .updateOne(
+                        // Recherche la sauce avec l'ID fourni dans la requête
                         { _id: req.params.id },
                         {
-                           $inc: { likes: 1 },
-                           $push: { usersLiked: req.auth.userId },
+                           $inc: { likes: 1 }, // Incrémente le nombre de likes de 1
+                           $push: { usersLiked: req.auth.userId }, // Ajoute l'ID de l'utilisateur dans le tableau usersLiked
                         }
                      )
                      .then(() =>
@@ -109,7 +110,7 @@ exports.userLikes = (req, res, next) => {
                      .updateOne(
                         { _id: req.params.id },
                         {
-                           $inc: { dislikes: 1 },
+                           $inc: { dislikes: 1 }, // Incrémente le nombre de dislikes de 1
                            $push: { usersDisliked: req.auth.userId },
                         }
                      )
