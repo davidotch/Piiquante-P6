@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const hotOnesRoutes = require("./routes/HotOnes");
 const userRoutes = require("./routes/user");
@@ -9,7 +11,6 @@ const path = require("path");
 const mongoose = require("mongoose");
 
 const helmet = require("helmet"); //Protection des entêtes http
-require("dotenv").config();
 
 const app = express();
 
