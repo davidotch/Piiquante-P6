@@ -1,16 +1,17 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const path = require("path");
-
 const hotOnesRoutes = require("./routes/HotOnes");
 const userRoutes = require("./routes/user");
-
+const path = require("path");
+const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
 const helmet = require("helmet"); //Protection des entêtes http
 const dotenv = require("dotenv");
 dotenv.config();
 
-const mongoSanitize = require("express-mongo-sanitize");
-const xss = require("xss-clean");
+
+
+
 
 mongoose.set("strictQuery", true); //suppression du warning mongoose au demarrage du serveur
 mongoose //connexion à mongoDB
@@ -23,7 +24,7 @@ mongoose //connexion à mongoDB
 
 const app = express();
 
-//Configuration des en-têtes CORS
+//CORS (Cross-Origin Resource Sharing)
 app.use((req, res, next) => {
    res.setHeader("Access-Control-Allow-Origin", "*");
    res.setHeader(
@@ -39,8 +40,8 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" })); //Prtection des entêtes http avec helmet
-
+app.use(helmet());
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" })); //Middleware pour protéger contre les attaques de type Cross-Site-Scripting (XSS)
 app.use(mongoSanitize()); //Middleware pour protéger contre les injections NoSQL, JavaScript et HTML (Insertion de caractères spéciaux)
 app.use(xss());
 
