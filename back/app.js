@@ -4,14 +4,10 @@ const hotOnesRoutes = require("./routes/HotOnes");
 const userRoutes = require("./routes/user");
 const path = require("path");
 const mongoSanitize = require("express-mongo-sanitize");
-const xss = require("xss-clean");
+const xssClean = require("xss-clean");
 const helmet = require("helmet"); //Protection des entêtes http
 const dotenv = require("dotenv");
 dotenv.config();
-
-
-
-
 
 mongoose.set("strictQuery", true); //suppression du warning mongoose au demarrage du serveur
 mongoose //connexion à mongoDB
@@ -43,8 +39,9 @@ app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" })); //Middleware pour protéger contre les attaques de type Cross-Site-Scripting (XSS)
 app.use(mongoSanitize()); //Middleware pour protéger contre les injections NoSQL, JavaScript et HTML (Insertion de caractères spéciaux)
-app.use(xss());
+app.use(xssClean());
 
+//routes
 app.use("/api/sauces", hotOnesRoutes);
 app.use("/api/auth", userRoutes);
 app.use("/images", express.static(path.join(__dirname, "images")));

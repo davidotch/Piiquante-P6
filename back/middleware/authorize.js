@@ -4,9 +4,9 @@ const secretToken = process.env.TOKEN_SECRET;
 
 module.exports = (req, res, next) => {
    try {
-      const token = req.headers.authorization.split(" ")[1];
-      const decodedToken = jwt.verify(token, secretToken);
-      const userId = decodedToken.userId;
+      const token = req.headers.authorization.split(" ")[1]; //On extrait le token de la requête
+      const decodedToken = jwt.verify(token, secretToken); //On décrypte le token grâce à la clé secrète
+      const userId = decodedToken.userId; //On récupère l'userId du token décrypté
       req.auth = {
          userId: userId,
       };
