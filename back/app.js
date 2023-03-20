@@ -1,18 +1,16 @@
 const express = require("express");
-const mongoSanitize = require("express-mongo-sanitize");
-const xss = require("xss-clean");
-const dotenv = require("dotenv");
-dotenv.config();
+const mongoose = require("mongoose");
+const path = require("path");
 
 const hotOnesRoutes = require("./routes/HotOnes");
 const userRoutes = require("./routes/user");
 
-const path = require("path");
-const mongoose = require("mongoose");
-
 const helmet = require("helmet"); //Protection des entêtes http
+const dotenv = require("dotenv");
+dotenv.config();
 
-const app = express();
+const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
 
 mongoose.set("strictQuery", true); //suppression du warning mongoose au demarrage du serveur
 mongoose //connexion à mongoDB
@@ -22,6 +20,8 @@ mongoose //connexion à mongoDB
    })
    .then(() => console.log("Connexion à MongoDB réussie !"))
    .catch(() => console.log("Connexion à MongoDB échouée !"));
+
+const app = express();
 
 //Configuration des en-têtes CORS
 app.use((req, res, next) => {
