@@ -3,9 +3,9 @@ const router = express.Router();
 
 const auth = require("../middleware/authorize");
 const multer = require("../middleware/multer-config");
-
 const hotOnesCtrls = require("../controllers/hotOnes");
 
+//liaison des routes vers les controllers
 router.get("/", auth, hotOnesCtrls.getAllThings);
 router.post("/", auth, multer, hotOnesCtrls.createThing);
 router.get("/:id", auth, hotOnesCtrls.getOneThing);

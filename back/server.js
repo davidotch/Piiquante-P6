@@ -1,4 +1,4 @@
-const http = require("http");
+const http = require("http"); //permet d'utiliser le serveur http
 const app = require("./app");
 
 // la fonction normalizePort renvoie un port valide, qu'il soit fourni sous la forme d'un numéro ou d'une chaîne
@@ -38,11 +38,11 @@ const errorHandler = (error) => {
    }
 };
 
-const server = http.createServer(app);
+const server = http.createServer(app); //construit le serveur avec le protocole http en utilisant app.js
 
 // un écouteur d'évènements est également enregistré, consignant le port ou le canal nommé sur lequel le serveur s'exécute dans la console
-server.on("error", errorHandler);
-server.on("listening", () => {
+server.on("error", errorHandler); 
+server.on("listening", () => { //lance le serveur et affiche les infos de connexion dans la console
    const address = server.address();
    const bind =
       typeof address === "string" ? "pipe " + address : "port " + port;
