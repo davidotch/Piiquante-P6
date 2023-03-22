@@ -1,5 +1,6 @@
 const passWord = require("password-validator");
 
+//création d'un schéma de données grâce amongoose avec les propriété désirées
 const passWordSchema = new passWord();
 
 passWordSchema
@@ -19,4 +20,5 @@ passWordSchema
    .not()
    .spaces(); // Should not have spaces
 
+   //exportation en tant que modèle
    module.exports = passWordSchema;

@@ -1,17 +1,20 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt"); //permet de hacher et saler les mots de passe
+const jwt = require("jsonwebtoken"); //permet de creer un token utilisateur
+const cryptoJs = require("crypto-js"); //permet de crypter l'adresse email de l'utilisateur
 const User = require("../models/User");
-const cryptoJs = require("crypto-js");
 
 const dotenv = require("dotenv");
 dotenv.config();
 const cryptoEmail = process.env.CRYPTO_EMAIL;
 const secretToken = process.env.TOKEN_SECRET;
 
+//enregistrement d'un nouvel utilisateur
 exports.signup = (req, res, next) => {
+   //cryptage de l'adresse email de l'utilisateur
    const secureEmail = cryptoJs
       .HmacSHA256(req.body.email, cryptoEmail)
       .toString();
+   //hachage du mot de passe
    bcrypt
       .hash(req.body.password, 10)
       .then((hash) => {
@@ -27,7 +30,9 @@ exports.signup = (req, res, next) => {
       .catch((error) => res.status(500).json({ error }));
 };
 
+//connexion d'un utilisateur existant
 exports.login = (req, res, next) => {
+   //cryptage de l'adress email de l'utilisateur
    const secureEmail = cryptoJs
       .HmacSHA256(req.body.email, cryptoEmail)
       .toString();
@@ -48,6 +53,7 @@ exports.login = (req, res, next) => {
                }
                res.status(200).json({
                   userId: user._id,
+                  //on attribue un token d'authentification
                   token: jwt.sign({ userId: user._id }, secretToken, {
                      expiresIn: "12h",
                   }),

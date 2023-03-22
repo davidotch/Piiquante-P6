@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+//création d'u schéma de données grâce a mongoose avec les propriété désirées
 const saucesModelSchema = mongoose.Schema({
    userId: { type: String, required: true },
    name: { type: String, required: true },
@@ -14,4 +15,5 @@ const saucesModelSchema = mongoose.Schema({
    usersDisliked: { type: [String] },
 });
 
+//exportation en tant sue modèle
 module.exports = mongoose.model("saucesModel", saucesModelSchema);

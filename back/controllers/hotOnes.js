@@ -1,15 +1,16 @@
-const saucesModel = require("../models/saucesModel");
-const fs = require("fs");
+const saucesModel = require("../models/saucesModel"); //importation du modèle de sauce
+const fs = require("fs"); //Système de gestion de fichier de Node
 
 exports.createThing = (req, res, next) => {
-   const sauceObject = JSON.parse(req.body.sauce);
-   delete sauceObject._id;
+   //création d'une sauce
+   const sauceObject = JSON.parse(req.body.sauce); //extraire l'object JSON
+   delete sauceObject._id; //retire l'id généré automatiquement par MongoDb
    delete sauceObject._userId;
    const sauce = new saucesModel({
-      ...sauceObject,
+      ...sauceObject, //Utilise l'opérateur spread pour copier les infos du corps de la requête
       userId: req.auth.userId,
       imageUrl: `${req.protocol}://${req.get("host")}/images/${
-         req.file.filename
+         req.file.filename //On génère l'url par rapport à son nom de fichier
       }`,
       likes: 0,
       dislikes: 0,
@@ -17,12 +18,13 @@ exports.createThing = (req, res, next) => {
       usersDisliked: [],
    });
    sauce
-      .save()
+      .save() //Sauvegarde la nouvelle sauce dans la base de données
       .then(() => res.status(201).json({ message: "Sauce created !" }))
       .catch((error) => res.status(400).json({ error }));
 };
 
 exports.getOneThing = (req, res, next) => {
+   //récupération d'une sauce
    saucesModel
       .findOne({ _id: req.params.id })
       .then((sauce) => {
@@ -32,6 +34,7 @@ exports.getOneThing = (req, res, next) => {
 };
 
 exports.modifyThing = (req, res, next) => {
+   //modification et suppression d'une sauce
    const sauceObject = req.file
       ? {
            ...JSON.parse(req.body.thing),
@@ -64,6 +67,7 @@ exports.modifyThing = (req, res, next) => {
          } else {
             const filename = oldImage;
             fs.unlink(`images/${filename}`, () => {
+               //on supprime l'ancienne image
                saucesModel
                   .updateOne(
                      { _id: req.params.id },
@@ -82,11 +86,14 @@ exports.modifyThing = (req, res, next) => {
 };
 
 exports.userLikes = (req, res, next) => {
+   //incrémentation des likes et dislikes des sauces
    saucesModel
       .findOne({ _id: req.params.id })
       .then((sauce) => {
+
+         //définit le status de like
          switch (req.body.like) {
-            case 1:
+            case 1: //utilisateur aime la sauce
                if (!sauce.usersLiked.includes(req.auth.userId)) {
                   saucesModel
                      .updateOne(
@@ -104,14 +111,14 @@ exports.userLikes = (req, res, next) => {
                }
                break;
 
-            case -1:
+            case -1: //utilisteur n'aime pas la sauce
                if (!sauce.usersDisliked.includes(req.auth.userId)) {
                   saucesModel
                      .updateOne(
                         { _id: req.params.id },
                         {
                            $inc: { dislikes: 1 }, // Incrémente le nombre de dislikes de 1
-                           $push: { usersDisliked: req.auth.userId },
+                           $push: { usersDisliked: req.auth.userId }, // Ajoute l'ID de l'utilisateur dans le tableau
                         }
                      )
                      .then(() =>
@@ -121,14 +128,14 @@ exports.userLikes = (req, res, next) => {
                }
                break;
 
-            case 0:
+            case 0: //utilisateur supprime son vote
                if (sauce.usersLiked.includes(req.auth.userId)) {
                   saucesModel
                      .updateOne(
                         { _id: req.params.id },
                         {
                            $inc: { likes: -1 },
-                           $pull: { usersLiked: req.auth.userId },
+                           $pull: { usersLiked: req.auth.userId }, //On sort l'utilisateur du tableau usersLiked
                         }
                      )
                      .then(() =>
@@ -141,7 +148,7 @@ exports.userLikes = (req, res, next) => {
                         { _id: req.params.id },
                         {
                            $inc: { dislikes: -1 },
-                           $pull: { usersDisliked: req.auth.userId },
+                           $pull: { usersDisliked: req.auth.userId }, //On sort l'utilisateur du tableau usersDisliked
                         }
                      )
                      .then(() =>
@@ -156,6 +163,7 @@ exports.userLikes = (req, res, next) => {
 };
 
 exports.deleteThing = (req, res, next) => {
+   //supprimer une sauce
    saucesModel
       .findOne({ _id: req.params.id })
       .then((sauce) => {
@@ -179,6 +187,7 @@ exports.deleteThing = (req, res, next) => {
 };
 
 exports.getAllThings = (req, res, next) => {
+   //récupérer toutes les sauces
    saucesModel
       .find()
       .then((sauces) => res.status(200).json(sauces))
