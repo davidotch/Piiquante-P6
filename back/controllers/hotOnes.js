@@ -90,16 +90,19 @@ exports.userLikes = (req, res, next) => {
    saucesModel
       .findOne({ _id: req.params.id })
       .then((sauce) => {
-
          //définit le status de like
          switch (req.body.like) {
             case 1: //utilisateur aime la sauce
                if (!sauce.usersLiked.includes(req.auth.userId)) {
+                  //verifie si userId n'est pas dans le tableau
                   saucesModel
                      .updateOne(
                         // Recherche la sauce avec l'ID fourni dans la requête
                         { _id: req.params.id },
                         {
+                           //$inc est un opérateur d'incrementation
+                           //$push est un opérateur qui ajoute une valeur a un tableau
+
                            $inc: { likes: 1 }, // Incrémente le nombre de likes de 1
                            $push: { usersLiked: req.auth.userId }, // Ajoute l'ID de l'utilisateur dans le tableau usersLiked
                         }
@@ -113,6 +116,7 @@ exports.userLikes = (req, res, next) => {
 
             case -1: //utilisteur n'aime pas la sauce
                if (!sauce.usersDisliked.includes(req.auth.userId)) {
+                  //on vérifie si userId n'est pas le tableau
                   saucesModel
                      .updateOne(
                         { _id: req.params.id },
@@ -130,11 +134,14 @@ exports.userLikes = (req, res, next) => {
 
             case 0: //utilisateur supprime son vote
                if (sauce.usersLiked.includes(req.auth.userId)) {
+                  // on verifie si userId n'est pas le tableau
                   saucesModel
                      .updateOne(
                         { _id: req.params.id },
                         {
-                           $inc: { likes: -1 },
+                           $inc: { likes: -1 }, //on incrémente de 1 (décrémente de 1)
+
+                           // $pull est un opérateur qui supprime une valeur dans un tableau
                            $pull: { usersLiked: req.auth.userId }, //On sort l'utilisateur du tableau usersLiked
                         }
                      )
@@ -143,11 +150,12 @@ exports.userLikes = (req, res, next) => {
                      )
                      .catch((error) => res.status(400).json({ error }));
                } else if (sauce.usersDisliked.includes(req.auth.userId)) {
+                  // on verifie si userId n'est pas le tableau
                   saucesModel
                      .updateOne(
                         { _id: req.params.id },
                         {
-                           $inc: { dislikes: -1 },
+                           $inc: { dislikes: -1 }, // on incremente de -1 (décrémente de 1)
                            $pull: { usersDisliked: req.auth.userId }, //On sort l'utilisateur du tableau usersDisliked
                         }
                      )

@@ -1,11 +1,15 @@
 const express = require("express"); //import du framework express pour nodeJS
 const mongoose = require("mongoose"); //package qui facilite les interactions avec notre base de données MongoDB
+
 const hotOnesRoutes = require("./routes/HotOnes"); //Importe le routeur pour les sauces
 const userRoutes = require("./routes/user"); //Importe le routeur pour les utilisateurs
+
 const path = require("path"); //Permet d'accéder aux chemins d'accès des fichiers
+
 const mongoSanitize = require("express-mongo-sanitize"); //protection contre les injections noSql
 const xssClean = require("xss-clean"); //protection contre les injections type xss
 const helmet = require("helmet"); //Protection des entêtes http
+
 const dotenv = require("dotenv"); //Permet de créer un environnement de variables
 dotenv.config();
 
@@ -39,8 +43,11 @@ app.use((req, res, next) => {
 app.use(express.json()); //Permet de récupérer le corps de la requête au format json
 
 app.use(helmet());
+
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" })); //Middleware pour protéger contre les attaques de type Cross-Site-Scripting (XSS)
+
 app.use(mongoSanitize()); //Middleware pour protéger contre les injections NoSQL, JavaScript et HTML (Insertion de caractères spéciaux)
+
 app.use(xssClean()); //Middleware pour protéger contre les attaques de type Cross-Site-Scripting (XSS)
 
 //routes

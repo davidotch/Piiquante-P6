@@ -53,7 +53,8 @@ exports.login = (req, res, next) => {
                }
                res.status(200).json({
                   userId: user._id,
-                  //on attribue un token d'authentification
+                  //on attribue un token d'authentification qui permet a l'utilisateur de se connecter qu'une seul fois a leur compte.
+                  // La méthode sign() du package jsonwebtoken utilise une clé secrète pour chiffrer un token qui peut contenir un payload personnalisé et avoir une validité limitée.
                   token: jwt.sign({ userId: user._id }, secretToken, {
                      expiresIn: "12h",
                   }),

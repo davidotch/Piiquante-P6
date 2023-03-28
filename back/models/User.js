@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-//permet de vérifier que le champ avec la propriété unique n'est pas déja présent dans la base de données
+const mongoose = require('mongoose'); //permet de vérifier que le champ avec la propriété unique n'est pas déja présent dans la base de données
 const uniqueValidator = require("mongoose-unique-validator");
 
 //création d'un schéma de données grâce a mongoose avec les propriété désirées
