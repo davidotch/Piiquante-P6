@@ -7,7 +7,7 @@ const controlPassword = require("../middleware/controlPassword"); //appel du mid
 
 const limiter = rateLimit({
    windowsMs: 12000, //durée 120s
-   max: 3, //limite les requêtes d'authntification à 3 toutes les 5 mins
+   max: 3, //limite les requêtes d'authntification à 3 toutes les 120s
    messsage: "limite de requête excéder !",
    // headers: true,
 });
