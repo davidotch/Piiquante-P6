@@ -6,8 +6,8 @@ const userCtrl = require("../controllers/user"); //Appel de la logique métier d
 const controlPassword = require("../middleware/controlPassword"); //appel du middleware controlPassword
 
 const limiter = rateLimit({
-   windowsMs: 5 * 60 * 1000, //durée de 5 min
-   max: 3, //limite les requêtes d'authntification à 3 toutes les 5 min
+   windowsMs: 60 * 60 * 1000, //durée de 5 min
+   max: 10, //limite les requêtes d'authntification à 3 toutes les 5 min
    messsage: "limite de requête excéder !",
    headers: true,
 });
