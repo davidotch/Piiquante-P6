@@ -6,10 +6,10 @@ const userCtrl = require("../controllers/user"); //Appel de la logique métier d
 const controlPassword = require("../middleware/controlPassword"); //appel du middleware controlPassword
 
 const limiter = rateLimit({
-   windowsMs: 60 * 60 * 1000, //durée de 5 min
-   max: 10, //limite les requêtes d'authntification à 10 toutes les 60 mins
+   windowsMs: 12000, //durée 120s
+   max: 3, //limite les requêtes d'authntification à 3 toutes les 5 mins
    messsage: "limite de requête excéder !",
-   headers: true,
+   // headers: true,
 });
 
 router.post("/signup", controlPassword, userCtrl.signup); //création d'un nouvel utilisateur
